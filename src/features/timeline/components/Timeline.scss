@@ -39,23 +39,50 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #007bff;
         color: white;
         padding: 0.3rem;
-        border-radius: 4px;
+        border-radius: 5px;
         font-size: 0.8rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        transition: all ease 0.3s;
+        color: var(--black);
+        font-weight: 500; 
+        letter-spacing: 0.02em; 
+        line-height: 1.6; 
+        text-rendering: optimizeLegibility;
   
         &:hover {
-          background-color: #0056b3;
+          transform: scale(1.1);
         }
   
         .timeline-event-name {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+        }
+
+        &.lane-1 {
+            background-color: var(--lane-color-1);
+        }
+        &.lane-2 {
+            background-color: var(--lane-color-2);
+        }
+        &.lane-3 {
+            background-color: var(--lane-color-3);
+        }
+        &.lane-4 {
+            background-color: var(--lane-color-4);
+        }
+        &.lane-5 {
+            background-color: var(--lane-color-5);
+        }
+        &.lane-6 {
+            background-color: var(--lane-color-6);
+        }
+        &.lane-7 {
+            background-color: var(--lane-color-7);
         }
       }
     }

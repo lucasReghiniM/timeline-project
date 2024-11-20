@@ -1,5 +1,7 @@
 import React from "react";
 
+import classNames from "classnames";
+
 import { TimelineEvent } from "../../../shared/types/timeline";
 import "./Timeline.scss";
 import { useTimeline } from "../hooks/useTimeline";
@@ -81,7 +83,10 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
               return (
                 <div
                   key={event.id}
-                  className="timeline-event"
+                  className={classNames(
+                    "timeline-event",
+                    `lane-${(laneIndex % 7) + 1}`
+                  )}
                   style={{
                     gridColumn: `${startOffset + 1} / span ${duration}`,
                     gridRow: `${laneIndex + 1}`

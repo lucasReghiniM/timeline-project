@@ -1,4 +1,16 @@
 @use "./variables" as vars;
+@use "./colors" as colors;
+
+:root {
+  --lane-color-1: #{colors.$green};
+  --lane-color-2: #{colors.$red};
+  --lane-color-3: #{colors.$blue};
+  --lane-color-4: #{colors.$orange};
+  --lane-color-5: #{colors.$purple};
+  --lane-color-6: #{colors.$yellow};
+  --lane-color-7: #{colors.$cyan};
+  --black: #{colors.$black-contrast};
+}
 
 /* Global Reset and Base Styles */
 *,
