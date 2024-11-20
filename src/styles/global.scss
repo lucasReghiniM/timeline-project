@@ -10,6 +10,9 @@
   --lane-color-6: #{colors.$yellow};
   --lane-color-7: #{colors.$cyan};
   --black: #{colors.$black-contrast};
+  --bg: #{colors.$background};
+  --white: #fff;
+  --light-gray: #{colors.$light-gray};
 }
 
 /* Global Reset and Base Styles */
@@ -60,6 +63,8 @@ body {
     font-size: 1rem; /* 16px */
     line-height: 1.5;
     color: #000;
+    background-color:var(--bg);
+
 }
 
 
