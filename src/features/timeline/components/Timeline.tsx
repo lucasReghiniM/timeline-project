@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import classNames from "classnames";
 
@@ -11,29 +11,76 @@ interface TimelineProps {
 }
 
 const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
-  const { lanes, daysRange, startDate, addEvent } = useTimeline(initialEvents);
+  const { lanes, daysRange, startDate, addEvent, setEvents } =
+    useTimeline(initialEvents);
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [draggedEvent, setDraggedEvent] = useState<TimelineEvent | null>(null);
+
+  const handleDragStart = (
+    e: React.DragEvent<HTMLDivElement>,
+    event: TimelineEvent
+  ) => {
+    setDraggedEvent(event);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const allowDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetDate: Date) => {
     e.preventDefault();
 
-    const form = e.currentTarget;
-    const nameInput = form.elements.namedItem("name") as HTMLInputElement;
-    const startInput = form.elements.namedItem("start") as HTMLInputElement;
-    const endInput = form.elements.namedItem("end") as HTMLInputElement;
+    if (!draggedEvent) return;
 
-    const name = nameInput.value;
-    const start = startInput.value;
-    const end = endInput.value;
+    const duration =
+      (new Date(draggedEvent.end).getTime() -
+        new Date(draggedEvent.start).getTime()) /
+      (1000 * 60 * 60 * 24);
 
-    addEvent(name, start, end);
-    form.reset();
+    const updatedStart = targetDate;
+    const updatedEnd = new Date(targetDate);
+    updatedEnd.setDate(updatedEnd.getDate() + duration);
+
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === draggedEvent.id
+          ? {
+              ...event,
+              start: updatedStart.toISOString().split("T")[0],
+              end: updatedEnd.toISOString().split("T")[0]
+            }
+          : event
+      )
+    );
+
+    setDraggedEvent(null);
   };
 
   return (
     <div className="timeline">
       <div className="timeline-form">
         <h3>Add New Event</h3>
-        <form onSubmit={handleFormSubmit}>
+        <form
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const nameInput = form.elements.namedItem(
+              "name"
+            ) as HTMLInputElement;
+            const startInput = form.elements.namedItem(
+              "start"
+            ) as HTMLInputElement;
+            const endInput = form.elements.namedItem("end") as HTMLInputElement;
+
+            const name = nameInput.value;
+            const start = startInput.value;
+            const end = endInput.value;
+
+            addEvent(name, start, end);
+            form.reset();
+          }}
+        >
           <input name="name" placeholder="Event Name" required />
           <input
             name="start"
@@ -52,9 +99,15 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
           <button type="submit">Add Event</button>
         </form>
       </div>
+
       <div className="timeline-header">
         {daysRange.map((day, index) => (
-          <div key={index} className="timeline-header-cell">
+          <div
+            key={index}
+            className="timeline-header-cell"
+            onDragOver={allowDrop}
+            onDrop={(e) => handleDrop(e, day)}
+          >
             <div className="month">
               {day
                 .toLocaleDateString("en-US", { month: "short" })
@@ -92,6 +145,8 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
                     gridRow: `${laneIndex + 1}`
                   }}
                   title={event.name}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, event)}
                 >
                   <span className="timeline-event-name">{event.name}</span>
                 </div>

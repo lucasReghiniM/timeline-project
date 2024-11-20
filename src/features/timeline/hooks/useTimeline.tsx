@@ -63,6 +63,7 @@ export const useTimeline = (initialEvents: TimelineEvent[]) => {
     daysRange,
     startDate,
     endDate,
-    addEvent
+    addEvent,
+    setEvents
   };
 };
