@@ -4,3 +4,5 @@ export interface TimelineEvent {
   end: string; // YYYY-MM-DD
   start: string; // YYYY-MM-DD
 }
+
+export type Lanes = TimelineEvent[][];

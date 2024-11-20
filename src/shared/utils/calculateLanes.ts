@@ -1,7 +1,7 @@
-import { TimelineEvent } from "../types/timeline";
+import { Lanes, TimelineEvent } from "../types/timeline";
 
-export const calculateLanes = (events: TimelineEvent[]) => {
-  const lanes: TimelineEvent[][] = [];
+export const calculateLanes = (events: TimelineEvent[]): Lanes => {
+  const lanes: Lanes = [];
   events.forEach((event) => {
     const lane = lanes.find((lane) =>
       lane.every(
