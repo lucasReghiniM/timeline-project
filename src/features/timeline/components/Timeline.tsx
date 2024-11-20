@@ -1,52 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { Lanes, TimelineEvent } from "../../../shared/types/timeline";
-import { calculateLanes } from "../../../shared/utils/calculateLanes";
+import { TimelineEvent } from "../../../shared/types/timeline";
 import "./Timeline.scss";
+import { useTimeline } from "../hooks/useTimeline";
 
 interface TimelineProps {
   events: TimelineEvent[];
 }
 
 const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
-  const sortedEvents = initialEvents.sort(
-    (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()
-  );
-
-  const [events, setEvents] = useState<TimelineEvent[]>(sortedEvents);
-  const [lanes, setLanes] = useState<Lanes>([]);
-
-  useEffect(() => {
-    const newLanes = calculateLanes(events);
-    setLanes(newLanes);
-  }, [events]);
-
-  const startDate = new Date(
-    Math.min(...sortedEvents.map((event) => new Date(event.start).getTime()))
-  );
-  const endDate = new Date(
-    Math.max(...sortedEvents.map((event) => new Date(event.end).getTime()))
-  );
-
-  const timezoneOffset = new Date().getTimezoneOffset() * 60000; //normalize UTC
-  const daysRange: Date[] = [];
-  for (
-    let d = new Date(startDate.getTime() + timezoneOffset);
-    d.getTime() <= endDate.getTime() + timezoneOffset;
-    d.setDate(d.getDate() + 1)
-  ) {
-    daysRange.push(new Date(d.getFullYear(), d.getMonth(), d.getDate()));
-  }
-
-  const addEvent = (name: string, start: string, end: string) => {
-    const newEvent: TimelineEvent = {
-      id: events.length + 1, // usign length so far
-      name,
-      start,
-      end
-    };
-    setEvents([...events, newEvent]);
-  };
+  const { lanes, daysRange, startDate, addEvent } = useTimeline(initialEvents);
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
