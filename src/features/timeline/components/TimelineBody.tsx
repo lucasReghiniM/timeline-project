@@ -59,56 +59,59 @@ const TimelineBody: React.FC<TimelineBodyProps> = ({
   };
 
   return (
-    <div
-      className="timeline-body"
-      onDragOver={allowDrop}
-      onDrop={handleDropOnBody}
-    >
-      {lanes &&
-        lanes.map((lane, laneIndex) =>
-          lane.map((event) => {
-            const startOffset =
-              (new Date(event.start).getTime() - startDate.getTime()) /
-              (1000 * 60 * 60 * 24);
-            const duration =
-              (new Date(event.end).getTime() -
-                new Date(event.start).getTime()) /
-                (1000 * 60 * 60 * 24) +
-              1;
+    <div className="timeline-body-wrapper">
+      <div className="timeline-grid-background"></div>
+      <div
+        className="timeline-body"
+        onDragOver={allowDrop}
+        onDrop={handleDropOnBody}
+      >
+        {lanes &&
+          lanes.map((lane, laneIndex) =>
+            lane.map((event) => {
+              const startOffset =
+                (new Date(event.start).getTime() - startDate.getTime()) /
+                (1000 * 60 * 60 * 24);
+              const duration =
+                (new Date(event.end).getTime() -
+                  new Date(event.start).getTime()) /
+                  (1000 * 60 * 60 * 24) +
+                1;
 
-            return (
-              <div
-                key={event.id}
-                className={classNames(
-                  "timeline-event",
-                  `lane-${(laneIndex % 7) + 1}`
-                )}
-                style={{
-                  gridColumn: `${startOffset + 1} / span ${duration}`,
-                  gridRow: `${laneIndex + 1}`
-                }}
-                title={event.name}
-                draggable
-                onDragStart={(e) => handleDragStart(e, event)}
-                onDoubleClick={() => handleDoubleClick(event.id, event.name)}
-                onKeyDown={handleKeyDown}
-              >
-                {editingEventId === event.id ? (
-                  <input
-                    type="text"
-                    value={editedName}
-                    onChange={handleNameChange}
-                    onBlur={saveEditedName}
-                    autoFocus
-                    className="timeline-event-edit-input"
-                  />
-                ) : (
-                  <span className="timeline-event-name">{event.name}</span>
-                )}
-              </div>
-            );
-          })
-        )}
+              return (
+                <div
+                  key={event.id}
+                  className={classNames(
+                    "timeline-event",
+                    `lane-${(laneIndex % 7) + 1}`
+                  )}
+                  style={{
+                    gridColumn: `${startOffset + 1} / span ${duration}`,
+                    gridRow: `${laneIndex + 1}`
+                  }}
+                  title={event.name}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, event)}
+                  onDoubleClick={() => handleDoubleClick(event.id, event.name)}
+                  onKeyDown={handleKeyDown}
+                >
+                  {editingEventId === event.id ? (
+                    <input
+                      type="text"
+                      value={editedName}
+                      onChange={handleNameChange}
+                      onBlur={saveEditedName}
+                      autoFocus
+                      className="timeline-event-edit-input"
+                    />
+                  ) : (
+                    <span className="timeline-event-name">{event.name}</span>
+                  )}
+                </div>
+              );
+            })
+          )}
+      </div>
     </div>
   );
 };
