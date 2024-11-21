@@ -3,7 +3,18 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { TimelineEvent, Lanes } from "../../../shared/types/timeline";
 import { calculateLanes } from "../../../shared/utils/calculateLanes";
 
-export const useTimeline = (initialEvents: TimelineEvent[]) => {
+interface UseTimelineReturn {
+  lanes: TimelineEvent[][];
+  daysRange: Date[];
+  startDate: Date;
+  endDate: Date;
+  addEvent: (name: string, start: string, end: string) => void;
+  setEvents: React.Dispatch<React.SetStateAction<TimelineEvent[]>>;
+}
+
+export const useTimeline = (
+  initialEvents: TimelineEvent[]
+): UseTimelineReturn => {
   const [events, setEvents] = useState<TimelineEvent[]>(initialEvents);
   const [lanes, setLanes] = useState<Lanes>([]);
   const [daysRange, setDaysRange] = useState<Date[]>([]);

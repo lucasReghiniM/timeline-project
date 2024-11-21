@@ -1,7 +1,7 @@
 import React from "react";
 
 import { TimelineEvent } from "../../../shared/types/timeline";
-import "./Timeline.scss";
+import "../styles/Timeline.scss";
 import { useDragAndDrop } from "../hooks/useDragAndDrop";
 import { useTimeline } from "../hooks/useTimeline";
 import TimelineBody from "./TimelineBody";
@@ -21,47 +21,6 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
 
   return (
     <div className="timeline">
-      <div className="timeline-form">
-        <h3>Add New Event</h3>
-        <form
-          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            const form = e.currentTarget;
-            const nameInput = form.elements.namedItem(
-              "name"
-            ) as HTMLInputElement;
-            const startInput = form.elements.namedItem(
-              "start"
-            ) as HTMLInputElement;
-            const endInput = form.elements.namedItem("end") as HTMLInputElement;
-
-            const name = nameInput.value;
-            const start = startInput.value;
-            const end = endInput.value;
-
-            addEvent(name, start, end);
-            form.reset();
-          }}
-        >
-          <input name="name" placeholder="Event Name" required />
-          <input
-            name="start"
-            type="date"
-            min="2021-01-01"
-            max="2021-12-31"
-            required
-          />
-          <input
-            name="end"
-            type="date"
-            min="2021-01-01"
-            max="2021-12-31"
-            required
-          />
-          <button type="submit">Add Event</button>
-        </form>
-      </div>
-
       <div className="timeline-header">
         {daysRange.map((day, index) => (
           <div
@@ -87,6 +46,8 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
         lanes={lanes}
         startDate={startDate}
         setEvents={setEvents}
+        daysRange={daysRange}
+        addEvent={addEvent}
       />
       <div>
         <ul>
