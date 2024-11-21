@@ -54,6 +54,7 @@ export const useTimeline = (
     }
 
     setDaysRange(range);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, endDate]);
 
   const addEvent = useCallback(

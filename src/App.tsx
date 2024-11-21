@@ -1,12 +1,11 @@
 import React from "react";
 
-import Timeline from "./features/timeline/components/Timeline";
-import timelineItems from "./shared/constants/mockTimelineData";
+import TimelinePage from "./pages/TimelinePage";
 
 const App: React.FC = () => {
   return (
     <div>
-      <Timeline events={timelineItems} />
+      <TimelinePage />
     </div>
   );
 };

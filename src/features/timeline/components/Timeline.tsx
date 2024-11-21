@@ -52,7 +52,7 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
       <div>
         <ul>
           <li>Gantt Timeline</li>
-          <li>Add event</li>
+          <li>Add event when click in a empty space</li>
           <li>Drag and drop</li>
           <li>Edit event name on double click</li>
         </ul>
