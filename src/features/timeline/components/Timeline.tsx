@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 import classNames from "classnames";
 
 import { TimelineEvent } from "../../../shared/types/timeline";
 import "./Timeline.scss";
+import { useDragAndDrop } from "../hooks/useDragAndDrop";
 import { useTimeline } from "../hooks/useTimeline";
 
 interface TimelineProps {
@@ -14,57 +15,10 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
   const { lanes, daysRange, startDate, addEvent, setEvents } =
     useTimeline(initialEvents);
 
-  const [draggedEvent, setDraggedEvent] = useState<TimelineEvent | null>(null);
-
-  const handleDragStart = (
-    e: React.DragEvent<HTMLDivElement>,
-    event: TimelineEvent
-  ) => {
-    setDraggedEvent(event);
-    e.dataTransfer.effectAllowed = "move";
-  };
-
-  const allowDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-
-  const handleDropOnBody = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (!draggedEvent) return;
-
-    const boundingRect = (
-      e.currentTarget as HTMLElement
-    ).getBoundingClientRect();
-    const columnWidth = boundingRect.width / daysRange.length;
-    const mouseX = e.clientX - boundingRect.left;
-    const targetColumn = Math.floor(mouseX / columnWidth);
-
-    const targetDate = daysRange[targetColumn];
-    if (!targetDate) return;
-
-    const duration =
-      (new Date(draggedEvent.end).getTime() -
-        new Date(draggedEvent.start).getTime()) /
-      (1000 * 60 * 60 * 24);
-
-    const updatedStart = targetDate;
-    const updatedEnd = new Date(targetDate);
-    updatedEnd.setDate(updatedEnd.getDate() + duration);
-
-    setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === draggedEvent.id
-          ? {
-              ...event,
-              start: updatedStart.toISOString().split("T")[0],
-              end: updatedEnd.toISOString().split("T")[0]
-            }
-          : event
-      )
-    );
-
-    setDraggedEvent(null);
-  };
+  const { handleDragStart, allowDrop, handleDropOnBody } = useDragAndDrop({
+    daysRange,
+    setEvents
+  });
 
   return (
     <div className="timeline">
