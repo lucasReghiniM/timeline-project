@@ -73,7 +73,7 @@ This project showcases the ability to build foundational features while leaving 
 
 # Media
 
-- Video: https://screenrec.com/share/gJZvP8hcDu
+- Video: https://screenrec.com/share/ZB8VWmJRMz
 
 # Folder Structure Standard
 

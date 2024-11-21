@@ -22,6 +22,11 @@ const AddEventModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
     const start = startInput.value;
     const end = endInput.value;
 
+    if (new Date(end) < new Date(start)) {
+      alert("End date cannot be earlier than the start date."); //If I had more time, I would apply a toastfy or similar here
+      return;
+    }
+
     onSubmit(name, start, end);
     form.reset();
     onClose();
@@ -37,14 +42,14 @@ const AddEventModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
             name="start"
             type="date"
             min="2021-01-01"
-            max="2021-12-31"
+            max="2021-02-16"
             required
           />
           <input
             name="end"
             type="date"
             min="2021-01-01"
-            max="2021-12-31"
+            max="2021-02-16"
             required
           />
           <div className="modal-buttons">
