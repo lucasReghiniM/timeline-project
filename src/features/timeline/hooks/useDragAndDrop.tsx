@@ -32,6 +32,7 @@ export const useDragAndDrop = ({
     const boundingRect = (
       e.currentTarget as HTMLElement
     ).getBoundingClientRect();
+
     const columnWidth = boundingRect.width / daysRange.length;
     const mouseX = e.clientX - boundingRect.left;
     const targetColumn = Math.floor(mouseX / columnWidth);
@@ -48,8 +49,8 @@ export const useDragAndDrop = ({
     const updatedEnd = new Date(targetDate);
     updatedEnd.setDate(updatedEnd.getDate() + duration);
 
-    setEvents((prevEvents) =>
-      prevEvents.map((event) =>
+    setEvents((prevEvents) => {
+      const updated = prevEvents.map((event) =>
         event.id === draggedEvent.id
           ? {
               ...event,
@@ -57,8 +58,10 @@ export const useDragAndDrop = ({
               end: updatedEnd.toISOString().split("T")[0]
             }
           : event
-      )
-    );
+      );
+      console.log("Updated Events:", updated);
+      return updated;
+    });
 
     setDraggedEvent(null);
   };

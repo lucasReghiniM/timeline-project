@@ -71,6 +71,10 @@ This project showcases the ability to build foundational features while leaving 
 - typescript
 - eslint + prettier
 
+# Media
+
+- Video: https://screenrec.com/share/gJZvP8hcDu
+
 # Folder Structure Standard
 
 For this project, I considered two well-known organizational patterns: Atomic Design and Feature-Sliced Design (FSD). While Atomic Design focuses on organizing components hierarchically (atoms, molecules, organisms, templates, pages), I opted for Feature-Sliced Design due to its scalability and focus on functional boundaries.
