@@ -120,6 +120,14 @@
         letter-spacing: 0.02em; 
         line-height: 1.6; 
         text-rendering: optimizeLegibility;
+
+        .timeline-event-edit-input {
+          width: 100%;
+          font-size: inherit;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          padding: 4px;
+        }
         
   
         &:hover {

@@ -1,11 +1,10 @@
 import React from "react";
 
-import classNames from "classnames";
-
 import { TimelineEvent } from "../../../shared/types/timeline";
 import "./Timeline.scss";
 import { useDragAndDrop } from "../hooks/useDragAndDrop";
 import { useTimeline } from "../hooks/useTimeline";
+import TimelineBody from "./TimelineBody";
 
 interface TimelineProps {
   events: TimelineEvent[];
@@ -81,44 +80,21 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
           </div>
         ))}
       </div>
-
-      <div
-        className="timeline-body"
-        onDragOver={allowDrop}
-        onDrop={handleDropOnBody}
-      >
-        {lanes &&
-          lanes.map((lane, laneIndex) =>
-            lane.map((event) => {
-              const startOffset =
-                (new Date(event.start).getTime() - startDate.getTime()) /
-                (1000 * 60 * 60 * 24);
-              const duration =
-                (new Date(event.end).getTime() -
-                  new Date(event.start).getTime()) /
-                  (1000 * 60 * 60 * 24) +
-                1;
-
-              return (
-                <div
-                  key={event.id}
-                  className={classNames(
-                    "timeline-event",
-                    `lane-${(laneIndex % 7) + 1}`
-                  )}
-                  style={{
-                    gridColumn: `${startOffset + 1} / span ${duration}`,
-                    gridRow: `${laneIndex + 1}`
-                  }}
-                  title={event.name}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, event)}
-                >
-                  <span className="timeline-event-name">{event.name}</span>
-                </div>
-              );
-            })
-          )}
+      <TimelineBody
+        handleDragStart={handleDragStart}
+        allowDrop={allowDrop}
+        handleDropOnBody={handleDropOnBody}
+        lanes={lanes}
+        startDate={startDate}
+        setEvents={setEvents}
+      />
+      <div>
+        <ul>
+          <li>Gantt Timeline</li>
+          <li>Add event</li>
+          <li>Drag and drop</li>
+          <li>Edit event name on double click</li>
+        </ul>
       </div>
     </div>
   );
