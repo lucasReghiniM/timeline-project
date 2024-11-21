@@ -28,10 +28,19 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
     e.preventDefault();
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetDate: Date) => {
+  const handleDropOnBody = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-
     if (!draggedEvent) return;
+
+    const boundingRect = (
+      e.currentTarget as HTMLElement
+    ).getBoundingClientRect();
+    const columnWidth = boundingRect.width / daysRange.length;
+    const mouseX = e.clientX - boundingRect.left;
+    const targetColumn = Math.floor(mouseX / columnWidth);
+
+    const targetDate = daysRange[targetColumn];
+    if (!targetDate) return;
 
     const duration =
       (new Date(draggedEvent.end).getTime() -
@@ -106,7 +115,6 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
             key={index}
             className="timeline-header-cell"
             onDragOver={allowDrop}
-            onDrop={(e) => handleDrop(e, day)}
           >
             <div className="month">
               {day
@@ -120,7 +128,11 @@ const Timeline: React.FC<TimelineProps> = ({ events: initialEvents }) => {
         ))}
       </div>
 
-      <div className="timeline-body">
+      <div
+        className="timeline-body"
+        onDragOver={allowDrop}
+        onDrop={handleDropOnBody}
+      >
         {lanes &&
           lanes.map((lane, laneIndex) =>
             lane.map((event) => {
