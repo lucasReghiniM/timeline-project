@@ -43,6 +43,8 @@ If given additional time and resources, I would enhance the project by implement
 5. **State Management**
    - Integrate a robust state management solution like **Redux** to handle complex application state more efficiently.
 
+obs: I created a hook with zoom logic, but it was not satisfactory in terms of UX because it zoomed in, rather than expanding the elements laterally (as expected in a timeline/calendar). For this reason, and due to the time constraint, I deleted the related files.
+
 ### Technologies I Would Consider
 
 - **Socket.IO**: For real-time collaboration and updates.
